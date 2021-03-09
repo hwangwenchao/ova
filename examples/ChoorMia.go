@@ -50,8 +50,9 @@ package main
 
 // import . 可以导入指定包，后续使用时可不用再加包名的访问方式。但是会造成相同函数、常量名称冲突
 import (
-	"common"
 	"fmt"
+	"ova/common"
+	"ova/msssql"
 	"reflect"
 	"unsafe"
 )
@@ -115,5 +116,27 @@ func main() {
 	fmt.Print("PIEx:", common.PIEx)
 	fmt.Print("\n")
 	fmt.Print("type of PIEx:", reflect.TypeOf(common.PIEx))
+	fmt.Print("\n")
 
+	fmt.Print("connect database...\n")
+	db := msssql.Msssql{
+		DataSource: "hddf021.my3w.com",
+		Database:   "hds1sf21_db",
+		IsWindows:  false,
+		Sa: msssql.SA{
+			User:     "hdssdf021",
+			Password: "",
+		},
+	}
+
+	// connect database
+	err := db.Open()
+	if err != nil {
+		fmt.Println("sql open:", err)
+	}
+	defer db.Close()
+	fmt.Print("close database")
+	fmt.Print("\n")
+
+	fmt.Print("--------------end----------------\n")
 }
